@@ -1,0 +1,7 @@
+0|ROOT|ROOT	chairman|NN|root
+2|Vinken|NNP	Mr.|NNP|nn
+4|chairman|NN	is|VBZ|cop	Vinken|NNP|nsubj	of|IN|prep	.|.|punct
+5|of|IN	N.V.|NNP|pobj
+7|N.V.|NNP	Elsevier|NNP|nn	,|,|punct	group|NN|appos
+12|group|NN	publishing|VBG|amod	Dutch|NNP|nn	the|DT
+

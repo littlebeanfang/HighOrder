@@ -1,0 +1,61 @@
+package BeanParser;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import weka.classifiers.Classifier;
+import weka.classifiers.functions.LinearRegression;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.converters.ArffLoader;
+
+public class Predict {
+	public Classifier classifier;
+	/**
+	 * this function is used to get rough word process_percentage out
+	 * @param trainfile
+	 * @param testfile
+	 * @param ansfile
+	 * @throws Exception
+	 */
+	public void SimpleTrainAndPredict(String trainfile,String testfile,String ansfile) throws Exception{
+		File outFile=new File(ansfile);
+		if(!outFile.exists()){
+			outFile.createNewFile();
+		}
+		FileWriter writer=new FileWriter(outFile);
+		
+		Classifier lrClassifier=new LinearRegression();
+		File inputFile=new File(trainfile);
+		ArffLoader atf=new ArffLoader();
+		atf.setFile(inputFile);
+		Instances trainInstances=atf.getDataSet();
+		inputFile=new File(testfile);
+		atf.setFile(inputFile);
+		Instances testInstances=atf.getDataSet();
+		testInstances.setClassIndex(10);
+		trainInstances.setClassIndex(10);
+		lrClassifier.buildClassifier(trainInstances);
+		
+		int testcount=testInstances.numInstances();
+		for(int i=0;i<testcount;i++){
+			double gold=testInstances.instance(i).value(10);
+			double predict=lrClassifier.classifyInstance(testInstances.instance(i));
+			writer.write(gold+"\t"+predict+"\n");
+		}
+		
+		writer.close();
+	}
+	public void Train(Classifier cf){
+		this.classifier=cf;
+		
+	}
+	public void PredictInstance(){
+		
+	}
+	
+	public static void main(String args[]) throws Exception{
+		Predict predict=new Predict();
+		predict.SimpleTrainAndPredict("ProcessIndexPredictTrain.arff", "ProcessIndexPredictTest.arff", "LRpredictout.txt");
+	}
+}
